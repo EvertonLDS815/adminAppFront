@@ -8,6 +8,7 @@ import FormatCurrency from '../../utils/FormatCurrency';
 import logOut from '../../assets/log-out.svg';
 import Trash from '../../assets/trash.svg';
 import CheckTable from '../../assets/check-table.png';
+import socketIo from 'socket.io-client';
 
 const Tables = () => {
   const [user, setUser] = useState('');
@@ -18,6 +19,27 @@ const Tables = () => {
     fetchUser();
     fetchTables()
   }, []);
+
+  useEffect(() => {
+    // Conectar ao servidor WebSocket (ajuste o URL se necessário)
+    const socket = socketIo('http://localhost:3000', {
+      transports: ['websocket'],  // Certifique-se de que está usando WebSocket
+    });
+
+    // Escutar o evento 'orders@new'
+    socket.on('orders@new', (order) => {
+      setOrders(prevState => [...prevState, order]);  // Adiciona o pedido à lista
+    });
+
+    // Limpeza ao desmontar o componente
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+  
+
+
+
   
   const fetchUser = async () => {
     const {data} = await api.get('/user');
@@ -96,6 +118,13 @@ const Tables = () => {
                           <h3>Total: {FormatCurrency(calculateTotal())}</h3>
                           {order.status === 'pending' && (
                             <button onClick={() => handleCheckOrder(order._id)}>Check</button>
+                          )}
+                          {order.status === 'completed' && (
+                            <button 
+                                onClick={() => handleCheckOrder(order._id)}
+                                style={{backgroundColor: 'red'}}>
+                              Uncheck
+                            </button>
                           )}
                         </div>
               </div>
