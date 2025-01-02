@@ -37,10 +37,6 @@ const Tables = () => {
     };
   }, []);
   
-
-
-
-  
   const fetchUser = async () => {
     const {data} = await api.get('/user');
 
