@@ -22,7 +22,7 @@ const Tables = () => {
 
   useEffect(() => {
     // Conectar ao servidor WebSocket (ajuste o URL se necessário)
-    const socket = socketIo('http://localhost:3000', {
+    const socket = socketIo('http://10.0.0.110:3000', {
       transports: ['websocket'],  // Certifique-se de que está usando WebSocket
     });
 
@@ -53,16 +53,17 @@ const Tables = () => {
   }
 
   const handleLogout = async () => {
-    const token = localStorage.removeItem('admin');
+    localStorage.removeItem('admin');
     navigate('/login');
   }
   const handleDeleteOrder = async (id) => {
     await api.delete(`/order/${id}`)
     fetchTables();
   }
+
   const handleCheckOrder = async (id) => {
     await api.patch(`/order/${id}`)
-    fetchTables();
+    return fetchTables();
   }
 
   
@@ -103,7 +104,7 @@ const Tables = () => {
                 
                   return (
                     <div key={productId._id} className='faq-content'>
-                        <img src={`http://localhost:3000${productId.imageURL}`} />
+                        <img src={`http://10.0.0.110:3000${productId.imageURL}`} />
                         <div>
                           <h4>{quantity}x {productId.name}</h4>
                           <span>{FormatCurrency(productId.price)}</span>

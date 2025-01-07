@@ -110,7 +110,7 @@ header button img{
         width: 95%;
     }
     .label-flex h3 {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     .total h3 {
         font-size: 1rem;
@@ -122,6 +122,6 @@ header button img{
         gap: 0.4rem;
     }
     .label-flex p {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 }
