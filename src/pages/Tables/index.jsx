@@ -4,11 +4,9 @@ import api from '../../config';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
-import FormatCurrency from '../../utils/FormatCurrency';
 import logOut from '../../assets/log-out.svg';
-import Trash from '../../assets/trash.svg';
-import CheckTable from '../../assets/check-table.png';
 import socketIo from 'socket.io-client';
+import Content from '../../components/Content';
 
 const Tables = () => {
   const [user, setUser] = useState('');
@@ -29,6 +27,37 @@ const Tables = () => {
     // Escutar o evento 'orders@new'
     socket.on('orders@new', (order) => {
       setOrders(prevState => [...prevState, order]);  // Adiciona o pedido à lista
+    });
+
+    socket.on('order@deleted', (order) => {
+      console.log('Evento recebido:', order);
+    
+      if (!order || !order._id) {
+        console.warn('Pedido inválido recebido:', order);
+        return;
+      }
+    
+      setOrders((prevState) => {
+        const validOrders = prevState.filter((o) => o && o._id); // Remove objetos inválidos
+        return validOrders.filter((o) => o._id !== order._id);
+      });
+    });
+
+    socket.on('order@checked', (updatedOrder) => {
+      setOrders((prevState) => {
+    
+        // Atualiza ou adiciona o pedido, sem removê-lo
+        const orderExists = prevState.some((order) => order._id === updatedOrder._id);
+        if (orderExists) {
+          // Atualiza o pedido existente
+          return prevState.map((order) =>
+            order._id === updatedOrder._id ? updatedOrder : order
+          );
+        } else {
+          // Adiciona um novo pedido
+          return [...prevState, updatedOrder];
+        }
+      });
     });
 
     // Limpeza ao desmontar o componente
@@ -56,15 +85,6 @@ const Tables = () => {
     localStorage.removeItem('admin');
     navigate('/login');
   }
-  const handleDeleteOrder = async (id) => {
-    await api.delete(`/order/${id}`)
-    fetchTables();
-  }
-
-  const handleCheckOrder = async (id) => {
-    await api.patch(`/order/${id}`)
-    return fetchTables();
-  }
 
   
   
@@ -79,55 +99,9 @@ const Tables = () => {
       </header>
 
       <div className='container'>
-        {orders.map((order) => {
-          const calculateTotal = () => {
-            return order.items.reduce((acc, item) => acc + item.productId.price * item.quantity, 0);
-            // console.log(order)
-            };
-          return (
-          <div key={order._id} className='content-order'>
-            <input type="checkbox" id={order._id} className='trigger-input' />
-            <div className='table-wrapper'>
-              <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                <label className='label-flex' htmlFor={order._id}>
-                  <h3>Mesa {order.tableId.number}</h3>
-                  <p>{order.userId.email}</p>
-                  <span>{order.items.length} {order.items.length > 1? 'itens' : 'item'}</span>
-                  {order.status === 'completed' && (
-                    <img src={CheckTable} />
-                  )}
-                </label>
-                <img src={Trash} onClick={() => handleDeleteOrder(order._id)}/>
-              </div>
-              <div className='opacity-container'>
-                {order.items.map(({productId, quantity}, index) => {
-                
-                  return (
-                    <div key={productId._id} className='faq-content'>
-                        <img src={`http://10.0.0.110:3000${productId.imageURL}`} />
-                        <div>
-                          <h4>{quantity}x {productId.name}</h4>
-                          <span>{FormatCurrency(productId.price)}</span>
-                        </div>
-                    </div>
-                )})}
-                        <div className="total">
-                          <h3>Total: {FormatCurrency(calculateTotal())}</h3>
-                          {order.status === 'pending' && (
-                            <button onClick={() => handleCheckOrder(order._id)}>Check</button>
-                          )}
-                          {order.status === 'completed' && (
-                            <button 
-                                onClick={() => handleCheckOrder(order._id)}
-                                style={{backgroundColor: 'red'}}>
-                              Uncheck
-                            </button>
-                          )}
-                        </div>
-              </div>
-            </div>
-          </div>
-        )})}
+        {orders.map((order) => (
+            <Content key={order._id} order={order} onFetchTable={fetchTables}/>
+          ))}
       </div>
     </>
   );
