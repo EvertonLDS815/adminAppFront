@@ -23,6 +23,7 @@ const Login = () => {
       navigate('/tables', { replace: true });
     } catch (err) {
       console.error(err);
+      alert(err.response.data.error);
       setError('Email e/ou senha inválidos!');
     }
   };

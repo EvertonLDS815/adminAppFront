@@ -1,14 +1,17 @@
 // App.js
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import history from './utils/redirect';
 
 // Import Components
 import Login from './pages/Login';
 import Tables from './pages/Tables';
 
 const App = () => {
+  const token = localStorage.getItem('admin');
   return (
     <Router>
-      <Routes>
+      <Routes history={history}>
+        <Route path="/" element={token ? <Navigate to="/tables" replace /> : <Navigate to="/login" replace />} />
         <Route path="/login" element={<PublicRoute component={Login} />} />
         <Route path="/tables" element={<PrivateRoute component={Tables} />} />
       </Routes>

@@ -30,7 +30,6 @@ const Tables = () => {
     });
 
     socket.on('order@deleted', (order) => {
-      console.log('Evento recebido:', order);
     
       if (!order || !order._id) {
         console.warn('Pedido inválido recebido:', order);
