@@ -2,7 +2,12 @@
 
 const Header = () => {
     return (
-        <header>Galera</header>
+        <header>
+            <h2>{`${user.role} - ${user.email}`}</h2>
+            <button onClick={handleLogout}>
+                <img src={logOut} />
+          </button>
+        </header>
     )
 }
 

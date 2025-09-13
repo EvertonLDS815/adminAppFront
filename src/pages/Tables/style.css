@@ -1,7 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 :root {
     --red: #c93538;
     --orange: #f79332;
 }
+
 
 header {
     background-color: var(--orange);
@@ -27,12 +33,33 @@ header button img{
     height: 2rem;
 }
 
+.division {
+    margin: 6rem auto 1rem;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.create-product {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 8px 0;
+    background-color: transparent;
+}
+
+.create-product img {
+    height: 30px;
+}
+
+.create-product span {
+    font-size: 1.1rem
+}
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    margin: 6rem 0 3rem;
 }
 
 .content-order {
