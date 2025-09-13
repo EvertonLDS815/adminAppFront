@@ -38,7 +38,7 @@ header button img{
     width: 500px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
 }
 .create-product {
     display: flex;
@@ -49,7 +49,7 @@ header button img{
 }
 
 .create-product img {
-    height: 30px;
+    height: 29px;
 }
 
 .create-product span {
@@ -132,6 +132,9 @@ header button img{
 @media (max-width: 530px) {
     header h2 {
         font-size: 1.2rem;
+    }
+    .division {
+        width: 95%;
     }
     .content-order {
         width: 95%;

@@ -4,11 +4,11 @@ import api from '../../config';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
-import logOut from '../../assets/log-out.svg';
 import socketIo from 'socket.io-client';
 import Content from '../../components/Content';
 import CreateProduct from '../../assets/box.png';
 import CreateCategory from '../../assets/category.png';
+import Header from '../../components/Header';
 
 const Tables = () => {
   const [user, setUser] = useState('');
@@ -16,7 +16,6 @@ const Tables = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUser();
     fetchTables();
   }, []);
 
@@ -67,14 +66,6 @@ const Tables = () => {
     };
   }, []);
   
-  const fetchUser = async () => {
-    const {data} = await api.get('/user');
-
-    setUser(data);
-    if (data.role === 'Waiter') {
-      return handleLogout();
-    }
-  };
 
   const fetchTables = async () => {
     const {data} = await api.get('/orders');
@@ -98,22 +89,17 @@ const Tables = () => {
   
   return (
     <>
-      <header>
-        <h2>{`${user.role} - ${user.email}`}</h2>
-        <button onClick={handleLogout}>
-              <img src={logOut} />
-          </button>
-      </header>
+      <Header />
 
       <div className='division'>
 
-        <button onClick={handleCreateProduct} className='create-product'>
-          <img src={CreateProduct} />
-          <span>Criar produto</span>
-        </button>
         <button onClick={handleCreateCategory} className='create-product'>
-          <img src={CreateCategory} />
           <span>Criar Categoria</span>
+          <img src={CreateCategory} />
+        </button>
+        <button onClick={handleCreateProduct} className='create-product'>
+          <span>Criar produto</span>
+          <img src={CreateProduct} />
         </button>
         
       </div>
