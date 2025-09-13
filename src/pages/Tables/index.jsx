@@ -93,14 +93,26 @@ const Tables = () => {
 
       <div className='division'>
 
-        <button onClick={handleCreateCategory} className='create-product'>
-          <span>Criar Categoria</span>
-          <img src={CreateCategory} />
-        </button>
-        <button onClick={handleCreateProduct} className='create-product'>
+        <select>
+          <option value="">
+            <button onClick={handleCreateCategory} className='create-product'>
+              <span>Criar Categoria</span>
+              <img src={CreateCategory} />
+            </button>
+          </option>
+          <option>
+            <button onClick={handleCreateProduct} className='create-product'>
+              <span>Criar produto</span>
+              <img src={CreateProduct} />
+            </button>
+          </option>
+        </select>
+
+        
+        {/* <button onClick={handleCreateProduct} className='create-product'>
           <span>Criar produto</span>
           <img src={CreateProduct} />
-        </button>
+        </button> */}
         
       </div>
         <div className='container'>
