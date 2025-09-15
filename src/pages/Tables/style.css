@@ -74,6 +74,13 @@ header button img{
     padding: 0.4rem;
     width: 500px;
 }
+
+@media (hover: hover) and (pointer: fine) {
+    .content-order:hover {
+        box-shadow: 1px 1px 5px 6px rgba(0, 0, 0, 0.3);
+    }
+}
+
 .label-flex {
     display: flex;
     gap: 0.7rem;
@@ -100,7 +107,6 @@ header button img{
     display: block;
     margin-top: 0.5rem;
 }
-
 .faq-content {
     display: flex;
     align-items: center;
@@ -134,7 +140,6 @@ header button img{
     background-color: #219421;
     color: white;
 }
-
 @media (max-width: 530px) {
     header h2 {
         font-size: 1.2rem;
@@ -145,6 +150,7 @@ header button img{
     .content-order {
         width: 95%;
     }
+
     .label-flex h3 {
         font-size: 1.1rem;
     }
@@ -152,6 +158,8 @@ header button img{
         font-size: 1rem;
     }
 }
+
+
 
 @media (max-width: 420px) {
     .label-flex {
