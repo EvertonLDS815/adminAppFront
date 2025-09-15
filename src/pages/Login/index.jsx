@@ -15,7 +15,6 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await api.post('/admin', { email, password });
-      
       // Salva o token no localStorage
       localStorage.setItem('admin', data.token);
   

@@ -5,7 +5,7 @@ import history from './utils/redirect';
 // Import Components
 import Login from './pages/Login';
 import Tables from './pages/Tables';
-import Category from './pages/Category';
+import User from './pages/User';
 import Product from './pages/Product';
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/" element={token ? <Navigate to="/tables" replace /> : <Navigate to="/login" replace />} />
         <Route path="/login" element={<PublicRoute component={Login} />} />
         <Route path="/tables" element={<PrivateRoute component={Tables} />} />
-        <Route path="/categories" element={<PrivateRoute component={Category} />} />
+        <Route path="/users" element={<PrivateRoute component={User} />} />
         <Route path="/products" element={<PrivateRoute component={Product} />} />
       </Routes>
     </Router>

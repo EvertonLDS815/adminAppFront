@@ -29,7 +29,7 @@ const Header = () => {
   };
     return (
         <header>
-            <h2>{`${user.role} - ${user.email}`}</h2>
+            <h2 style={{ cursor: 'pointer' }} onClick={() => navigate('/tables')}>{`${user.role} - ${user.email}`}</h2>
             <button onClick={handleLogout}>
                 <img src={logOut} />
           </button>

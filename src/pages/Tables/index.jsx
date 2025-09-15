@@ -6,12 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import './style.css';
 import socketIo from 'socket.io-client';
 import Content from '../../components/Content';
-import CreateProduct from '../../assets/box.png';
-import CreateCategory from '../../assets/category.png';
 import Header from '../../components/Header';
 
 const Tables = () => {
-  const [user, setUser] = useState('');
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
@@ -73,17 +70,15 @@ const Tables = () => {
     setOrders(data);
   };
 
-  const handleLogout = async () => {
-    localStorage.removeItem('admin');
-    navigate('/login');
-  };
+  const handleSelectChange = (e) => {
+  const value = e.target.value;
 
-  const handleCreateCategory = async () => {
-    navigate('/categories');
-  };
-  const handleCreateProduct = async () => {
-    navigate('/products');
-  };
+  if (value === "product") {
+    navigate("/products");
+  } else if (value === "user") {
+    navigate("/users");
+  }
+};
   
   
   
@@ -93,26 +88,13 @@ const Tables = () => {
 
       <div className='division'>
 
-        <select>
-          <option value="">
-            <button onClick={handleCreateCategory} className='create-product'>
-              <span>Criar Categoria</span>
-              <img src={CreateCategory} />
-            </button>
-          </option>
-          <option>
-            <button onClick={handleCreateProduct} className='create-product'>
-              <span>Criar produto</span>
-              <img src={CreateProduct} />
-            </button>
-          </option>
+        <select onChange={handleSelectChange} defaultValue="">
+        <option value="" disabled>
+          Selecione uma opção
+        </option>
+        <option value="product">+ Criar Produto</option>
+        <option value="user">+ Criar Usuário</option>
         </select>
-
-        
-        {/* <button onClick={handleCreateProduct} className='create-product'>
-          <span>Criar produto</span>
-          <img src={CreateProduct} />
-        </button> */}
         
       </div>
         <div className='container'>

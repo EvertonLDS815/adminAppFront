@@ -40,6 +40,11 @@ header button img{
     flex-direction: column;
     align-items: flex-end;
 }
+
+.division select {
+    font-size: 1rem;
+    padding: 0.3rem;
+}
 .create-product {
     display: flex;
     align-items: center;
@@ -60,6 +65,7 @@ header button img{
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .content-order {
