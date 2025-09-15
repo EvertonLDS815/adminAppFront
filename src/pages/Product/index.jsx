@@ -1,19 +1,35 @@
 // Product.js
 import Header from "../../components/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../config";
-import { useNavigate } from "react-router-dom";
+import FormatCurrency from "../../utils/FormatCurrency";
+import './style.css';
 
 const Product = () => {
   const [name, setNameProduct] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState('');
 
-  const navigate = useNavigate();
-  
+  // 👇 coloca a função fora do useEffect
+  const fetchProducts = async () => {
+    try {
+      const { data } = await api.get('/products');
+      setProducts(data);
+    } catch (err) {
+      setError('Failed to fetch products');
+    }
+  };
+
   async function handleUserSubmit(event) {
     event.preventDefault();
+
+    if (!name || !price || !image) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
 
     try {
       const formData = new FormData();
@@ -30,22 +46,42 @@ const Product = () => {
       setPrice('');
       setImage(null);
       setPreview(null);
+
+      // 👇 atualiza a lista de produtos logo após salvar
+      fetchProducts();
     } catch (err) {
       console.error(err);
       alert("Erro ao criar produto!");
     }
   }
 
-  function handleFileChange(e) {
-    const file = e.target.files[0];
+  function handleFileChange(event) {
+    const file = event.target.files[0];
     setImage(file);
 
     if (file) {
-      setPreview(URL.createObjectURL(file)); // cria prévia da imagem
-    } else {
-      setPreview(null);
+    setImage(file);
+    setPreview(URL.createObjectURL(file)); // cria prévia da nova imagem
+    }
+    event.target.value = "";
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  async function handleProductDelete(productId) {
+    try {
+      await api.delete(`/product/${productId}`);
+      // Atualiza a lista de produtos após a exclusão
+      fetchProducts();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao deletar produto!");
     }
   }
+
+
 
   return (
     <>
@@ -57,7 +93,6 @@ const Product = () => {
             placeholder="Nome do Produto"
             value={name}
             onChange={(e) => setNameProduct(e.target.value)}
-            required
           />
         </label>
 
@@ -67,11 +102,9 @@ const Product = () => {
             placeholder="Preço"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            required
           />
         </label>
 
-        {/* Quadrado estilizado */}
         <div className="file-upload">
           <input
             type="file"
@@ -91,6 +124,23 @@ const Product = () => {
 
         <button type="submit">Criar Produto</button>
       </form>
+
+      <ul className="list">
+        {products.map((product) => (
+          <li key={product._id} className="list-item-products">
+            <h3>{product.name}</h3>
+            <img
+              className="image-product"
+              src={`http://10.0.0.110:3000${product.imageURL}`}
+              alt={product.name}
+            />
+            <div className="contents">
+              <h4>{FormatCurrency(product.price)}</h4>
+              <button onClick={() => handleProductDelete(product._id)} style={{backgroundColor: '#ff5000'}}>Delete</button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </>
   );
 };
