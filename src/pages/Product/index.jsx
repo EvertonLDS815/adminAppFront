@@ -41,7 +41,6 @@ const Product = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      alert("Produto criado com sucesso!");
       setNameProduct('');
       setPrice('');
       setImage(null);
@@ -130,9 +129,9 @@ const Product = () => {
           <li key={product._id} className="list-item-products">
             <h3>{product.name}</h3>
             <img
-              className="image-product"
-              src={`http://10.0.0.110:3000${product.imageURL}`}
-              alt={product.name}
+                className="image-product"
+                src={product.imageURL}
+                alt={product.name}
             />
             <div className="contents">
               <h4>{FormatCurrency(product.price)}</h4>

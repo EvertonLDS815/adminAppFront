@@ -7,8 +7,5 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',  // Aceitar conexões de qualquer IP na rede local
     port: 3001,        // A porta que você deseja usar
-    proxy: {
-      '/api': 'http://10.0.0.110:3000'
-    }
   },
 })

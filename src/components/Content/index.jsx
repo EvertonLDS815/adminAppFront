@@ -44,7 +44,7 @@ const Content = ({order, onFetchTable}) => {
         {order.items?.map(({ productId, quantity }) => (
           <div key={productId?._id || Math.random()} className="faq-content">
             {productId?.imageURL ? (
-              <img src={`http://10.0.0.110:3000${productId.imageURL}`} />
+              <img src={`${productId.imageURL}`} />
             ) : (
               <span>Produto removido</span>
             )}
