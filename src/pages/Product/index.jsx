@@ -23,36 +23,36 @@ const Product = () => {
     }
   };
 
-  async function handleUserSubmit(event) {
-    event.preventDefault();
+  async function handleCreateProduct(event) {
+  event.preventDefault();
 
-    if (!name || !price || !image) {
-      alert("Por favor, preencha todos os campos.");
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("price", parseFloat(price));
-      formData.append("image", image);
-
-      await api.post("/product", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      setNameProduct('');
-      setPrice('');
-      setImage(null);
-      setPreview(null);
-
-      // 👇 atualiza a lista de produtos logo após salvar
-      fetchProducts();
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao criar produto!");
-    }
+  if (!name || !price || !image) {
+    alert("Por favor, preencha todos os campos.");
+    return;
   }
+
+  try {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("price", parseFloat(price));
+    formData.append("image", image);
+
+    await api.post("/product", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    setNameProduct('');
+    setPrice('');
+    setImage(null);
+    setPreview(null);
+
+    fetchProducts(); // atualiza lista
+  } catch (err) {
+  console.error(err);
+  alert("Erro ao criar produto!");
+}
+}
+
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -85,7 +85,7 @@ const Product = () => {
   return (
     <>
       <Header />
-      <form id="user-form" onSubmit={handleUserSubmit}>
+      <form id="user-form" onSubmit={handleCreateProduct}>
         <label>
           <input
             type="text"

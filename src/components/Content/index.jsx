@@ -18,10 +18,7 @@ const Content = ({order, onFetchTable}) => {
 
     const calculateTotal = () => {
         return order.items.reduce((acc, item) => acc + item.productId.price * item.quantity, 0);
-    // console.log(order)
     };
-
-    console.log(order)
 
     return (
   <div key={order._id} className="content-order">
