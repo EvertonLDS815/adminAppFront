@@ -15,7 +15,7 @@ const Header = () => {
       }, []);
 
     const fetchUser = async () => {
-    const {data} = await api.get('/user');
+    const {data} = await api.get('/user/email');
 
     setUser(data);
     if (data.role === 'Waiter') {
