@@ -1,6 +1,6 @@
 // User.js
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import api from "../../config";
 import './style.css';
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const User = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [users, setUsers] = useState([]);
 
   const navigate = useNavigate();
 
@@ -26,6 +27,30 @@ const User = () => {
     
       navigate('/tables', { replace: true });
   }
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  async function fetchUsers() {
+    try {
+      const { data } = await api.get("/user");
+      setUsers(data);
+    } catch (error) {
+      console.error("Erro ao buscar usuários:", error);
+    }
+  }
+
+  const handleRoleChange = async (userId) => {
+    try {
+      await api.patch(`/user/${userId}`);
+      fetchUsers(); // Atualiza a lista de usuários após a mudança de role
+    }
+    catch (error) {
+      console.error("Erro ao alterar role:", error);
+    }
+  };
+
 
   return (
     <>
@@ -49,6 +74,43 @@ const User = () => {
           </label>
           <button type="submit">Criar Usuário</button>
         </form>
+
+        <div>
+      <table className="user-list">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user._id}>
+              <td>{user.email}</td>
+              <td
+                style={{
+                  backgroundColor: user.role === "Waiter" ? "#bb8011" : "#12568a",
+                  color: "white",
+                  textAlign: "center",
+                  borderRadius: "4px",
+                  padding: "0.3rem",
+                  width: "80px",
+                  margin: "0 auto"
+                }}
+              >
+                {user.role}
+              </td>
+              <td className="tdButton">
+                <button className="buttonChange" onClick={() => handleRoleChange(user._id)}>
+                  Alterar
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
     </>
   );
 };

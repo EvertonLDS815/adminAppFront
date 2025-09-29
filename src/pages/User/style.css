@@ -68,11 +68,39 @@
   object-fit: cover;
 }
 
+.user-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 2rem auto;
+    width: 450px;
+    background-color: #ddd;
+    border-radius: 7px;
+    box-shadow: 1px 1px 8px 4px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+}
+
+.tdButton {
+    text-align: center;
+}
+
+.buttonChange {
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
 
 @media (max-width: 545px) {
     #user-form {
         width: 90%;
         margin: 6rem auto 0;
+    }
+    .user-list {
+        width: 90%;
     }
 
     #user-form input {
